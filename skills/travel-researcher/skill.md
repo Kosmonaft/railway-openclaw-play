@@ -12,14 +12,23 @@ Cron: `0 */4 * * *`
 
 ## Travel Context (encode as default)
 
-- **Traveler count:** $TRAVELER_COUNT (default: 2)
 - **Origin:** Sydney, Australia — SYD (or MEL as alternate)
 - **Final destination:** Wroclaw, Poland (no direct flights — must route via gateway city)
 - **Must arrive in Europe by:** 8 August 2026
 - **Must return to Sydney by:** approximately 29–31 August 2026
 - **Outbound flexibility:** 5–8 August 2026
 - **Return flexibility:** 27–31 August 2026
-- **Budget threshold:** $FLIGHT_BUDGET_THRESHOLD $FLIGHT_CURRENCY total — triggers urgent alert
+- **Budget threshold:** $FLIGHT_BUDGET_PER_PERSON $FLIGHT_CURRENCY per adult — triggers urgent alert
+
+## Traveler Scenarios
+
+Search **both scenarios every run** and report both:
+
+- **Solo** — 1 adult
+- **Family** — 2 adults + 1 child age 6 (children's fare, typically same as adult on long haul) + 1 lap infant age 2 (under 2, flies on parent's lap at ~10% of adult fare — no seat)
+
+Always display prices as: total trip cost + per-adult cost.
+Alert triggers when per-adult fare drops below `$FLIGHT_BUDGET_PER_PERSON` in either scenario.
 
 ## Accepted European Gateway Cities for Wroclaw
 
@@ -160,7 +169,7 @@ Reasoning: [1-2 sentences]
 
 ### i) Urgent deal alert
 
-If ANY combination drops below `$FLIGHT_BUDGET_THRESHOLD`, send immediately:
+If ANY combination's per-adult fare drops below `$FLIGHT_BUDGET_PER_PERSON`, send immediately:
 
 ```
 🚨 DEAL ALERT — BOOK NOW
@@ -188,6 +197,5 @@ If the user replies "I booked it" or similar:
 
 ## Environment Variables
 
-- `FLIGHT_BUDGET_THRESHOLD` — AUD total budget, triggers urgent alert
+- `FLIGHT_BUDGET_PER_PERSON` — AUD per adult threshold. Urgent alert fires when any route's per-adult cost drops below this (default: 1600)
 - `FLIGHT_CURRENCY` — Currency for all price display (default: AUD)
-- `TRAVELER_COUNT` — Number of travelers (all prices must reflect this)
