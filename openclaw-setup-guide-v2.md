@@ -212,7 +212,7 @@ j) If the user replies "I booked it" or similar, the agent should:
    - Save the final booked itinerary to memory
    - Offer to switch to "trip planning mode" (accommodation research, etc.)
 
-**Schedule:** Run twice daily — 8am and 8pm AEST (adjust for UTC)
+**Schedule:** Run every 4 hours — cron `0 */4 * * *`
 
 **Skill file location:** `skills/travel-researcher/skill.md`
 

@@ -6,11 +6,9 @@ Autonomously discover the best possible travel itineraries for a SYD → Wroclaw
 
 ## Schedule
 
-Run twice daily: **8am AEST** and **8pm AEST**
-- 8am AEST = 22:00 UTC (previous day)
-- 8pm AEST = 10:00 UTC
+Run every 4 hours.
 
-Cron: `0 22,10 * * *`
+Cron: `0 */4 * * *`
 
 ## Travel Context (encode as default)
 
