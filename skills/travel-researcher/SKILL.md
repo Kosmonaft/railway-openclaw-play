@@ -1,3 +1,8 @@
+---
+name: travel-researcher
+description: Autonomously researches SYD→Wroclaw flights for August 2026, tracks price history, and sends Telegram alerts every 4 hours.
+---
+
 # Skill: Intelligent Travel Researcher
 
 ## Purpose
