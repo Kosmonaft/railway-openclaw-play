@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/pawelchristow/Documents/Work/railway-openclaw-play && git -C /Users/pawelchristow/Documents/Work/railway-openclaw-play status)",
+      "Bash(git init && git checkout -b main)",
+      "Bash(git add Dockerfile railway.json .env.example .gitignore README.md openclaw.json openclaw-setup-guide-v2.md skills/ data/.gitkeep scripts/ && git status)",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nInitial OpenClaw Railway setup\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git remote add origin https://github.com/Kosmonaft/railway-openclaw-play.git && git push -u origin main)"
+    ]
+  }
+}
