@@ -28,4 +28,11 @@ if [ -n "$GEMINI_API_KEY" ]; then
 EOF"
 fi
 
+# Copy workspace skills into the data volume so OpenClaw can find them
+if [ -d /app/skills ]; then
+  mkdir -p /data/workspace/skills
+  cp -r /app/skills/. /data/workspace/skills/
+  chown -R openclaw:openclaw /data/workspace/skills
+fi
+
 exec gosu openclaw node src/server.js
