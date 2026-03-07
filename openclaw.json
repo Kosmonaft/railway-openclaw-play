@@ -1,0 +1,30 @@
+{
+  "name": "openclaw-railway",
+  "mode": "headless",
+  "llm": {
+    "primary": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "apiKeyEnv": "ANTHROPIC_API_KEY"
+    },
+    "fallback": {
+      "provider": "google",
+      "model": "gemini-2.5-flash",
+      "apiKeyEnv": "GEMINI_API_KEY"
+    }
+  },
+  "messenger": {
+    "type": "telegram",
+    "botTokenEnv": "TELEGRAM_BOT_TOKEN",
+    "chatIdEnv": "TELEGRAM_CHAT_ID"
+  },
+  "skills": {
+    "directory": "./skills"
+  },
+  "data": {
+    "directory": "./data"
+  },
+  "logging": {
+    "level": "info"
+  }
+}
