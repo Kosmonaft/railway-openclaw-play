@@ -1,28 +1,49 @@
-FROM node:20-slim
+FROM node:22-bookworm
 
-# Install OpenClaw globally
-RUN npm install -g openclaw
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    gosu \
+    procps \
+    python3 \
+    build-essential \
+    zip \
+  && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
+RUN npm install -g openclaw@2026.3.2
+
 WORKDIR /app
 
-# Create non-root user
-RUN groupadd --gid 1001 openclaw && \
-    useradd --uid 1001 --gid openclaw --shell /bin/bash --create-home openclaw
+COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && pnpm install --frozen-lockfile --prod
 
-# Copy project files
-COPY --chown=openclaw:openclaw openclaw.json ./
+COPY src ./src
+COPY --chmod=755 entrypoint.sh ./entrypoint.sh
+
+# Copy custom skills and config
 COPY --chown=openclaw:openclaw skills/ ./skills/
-COPY --chown=openclaw:openclaw scripts/ ./scripts/
 
-# Ensure data directory exists and is writable
-RUN mkdir -p /app/data && chown openclaw:openclaw /app/data
-
-RUN chmod +x /app/scripts/healthcheck.sh
+RUN useradd -m -s /bin/bash openclaw \
+  && chown -R openclaw:openclaw /app \
+  && mkdir -p /data && chown openclaw:openclaw /data \
+  && mkdir -p /home/linuxbrew/.linuxbrew && chown -R openclaw:openclaw /home/linuxbrew
 
 USER openclaw
+RUN NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-  CMD /app/scripts/healthcheck.sh
+ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+ENV HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+ENV HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
+ENV HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
 
-CMD ["openclaw", "start", "--headless"]
+ENV PORT=8080
+ENV OPENCLAW_ENTRY=/usr/local/lib/node_modules/openclaw/dist/entry.js
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
+  CMD curl -f http://localhost:8080/setup/healthz || exit 1
+
+USER root
+ENTRYPOINT ["./entrypoint.sh"]
