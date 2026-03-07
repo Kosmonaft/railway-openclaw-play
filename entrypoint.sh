@@ -11,9 +11,21 @@ fi
 rm -rf /home/linuxbrew/.linuxbrew
 ln -sfn /data/.linuxbrew /home/linuxbrew/.linuxbrew
 
-# Inject Gemini API key from environment variable if set
+# Inject Gemini API key from environment variable into auth-profiles.json
 if [ -n "$GEMINI_API_KEY" ]; then
-  gosu openclaw node "$OPENCLAW_ENTRY" config set auth.profiles.google:default.apiKey "$GEMINI_API_KEY" || true
+  AUTH_PROFILES_DIR="/data/.openclaw/agents/main/agent"
+  AUTH_PROFILES_FILE="$AUTH_PROFILES_DIR/auth-profiles.json"
+  mkdir -p "$AUTH_PROFILES_DIR"
+  chown -R openclaw:openclaw "$AUTH_PROFILES_DIR"
+  gosu openclaw bash -c "cat > '$AUTH_PROFILES_FILE' << 'EOF'
+{
+  \"google:default\": {
+    \"provider\": \"google\",
+    \"mode\": \"api_key\",
+    \"key\": \"$GEMINI_API_KEY\"
+  }
+}
+EOF"
 fi
 
 exec gosu openclaw node src/server.js
