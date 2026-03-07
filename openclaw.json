@@ -3,14 +3,14 @@
   "mode": "headless",
   "llm": {
     "primary": {
-      "provider": "anthropic",
-      "model": "claude-sonnet-4-6",
-      "apiKeyEnv": "ANTHROPIC_API_KEY"
-    },
-    "fallback": {
       "provider": "google",
       "model": "gemini-2.5-flash",
       "apiKeyEnv": "GEMINI_API_KEY"
+    },
+    "fallback": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "apiKeyEnv": "ANTHROPIC_API_KEY"
     }
   },
   "messenger": {

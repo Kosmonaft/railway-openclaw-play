@@ -19,8 +19,9 @@ Set up an OpenClaw project with the following:
 
 ### Core requirements
 - OpenClaw installed and configured to run as a persistent Node.js daemon
-- API-only LLM configuration (no local models) — configure for Anthropic Claude Sonnet as 
-  primary (this skill requires strong reasoning), with Gemini 2.5 Flash as a cheap fallback
+- API-only LLM configuration (no local models) — configure Gemini 2.5 Flash as the 
+  primary model for all scheduled/heartbeat tasks, with Claude Sonnet 4.6 as fallback 
+  for when Gemini is unavailable or rate-limited. Do NOT use Claude as the default.
 - Telegram as the messaging interface
 - All secrets stored as environment variables, never hardcoded
 - A Dockerfile suitable for Railway deployment
@@ -357,6 +358,8 @@ The agent will update its behaviour and search strategy based on your messages.
 | Gemini fallback | Free tier |
 | **Total** | **~$7–9/month** |
 
-Note: The travel researcher uses Claude Sonnet (not Haiku) because the multi-variable 
-routing reasoning genuinely benefits from a smarter model. The grocery planner can 
-fall back to Gemini to keep costs down.
+Note: Gemini 2.5 Flash is the default for all scheduled checks. Claude Sonnet is 
+only used as a fallback — so your real API cost most months will be $0 if you stay 
+within Gemini's free tier (1,000 requests/day). At 6 checks/day you're using ~6 
+requests — well within the free limit. Claude Sonnet costs only kick in if Gemini 
+goes down or you exceed Gemini's limits.
