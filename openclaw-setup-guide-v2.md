@@ -354,12 +354,12 @@ The agent will update its behaviour and search strategy based on your messages.
 | Item | Cost |
 |---|---|
 | Railway Hobby | $5 credit |
-| Anthropic Claude Sonnet (travel reasoning) | ~$2–4 |
-| Gemini fallback | Free tier |
-| **Total** | **~$7–9/month** |
+| Anthropic Claude Haiku (fallback only) | ~$0–1 |
+| Gemini 2.5 Flash | Free tier |
+| **Total** | **~$5–6/month** |
 
-Note: Gemini 2.5 Flash is the default for all scheduled checks. Claude Sonnet is 
-only used as a fallback — so your real API cost most months will be $0 if you stay 
-within Gemini's free tier (1,000 requests/day). At 6 checks/day you're using ~6 
-requests — well within the free limit. Claude Sonnet costs only kick in if Gemini 
-goes down or you exceed Gemini's limits.
+Note: Gemini 2.5 Flash is the default for all scheduled checks. Claude Haiku 4.5 is
+only used as a fallback — so your real API cost most months will be $0 if you stay
+within Gemini's free tier (1,000 requests/day). At 6 checks/day you're using ~6
+requests — well within the free limit. Haiku is ~20x cheaper than Sonnet if the
+fallback does kick in.
