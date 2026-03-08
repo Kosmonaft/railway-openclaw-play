@@ -57,6 +57,16 @@ Alert triggers when per-adult fare drops below `$FLIGHT_BUDGET_PER_PERSON` in ei
 
 5. **Return via different hub** — e.g. SYD → Berlin → ... → Sofia → SYD or similar.
 
+## API Rate Limiting Rules
+
+**CRITICAL — follow these to avoid hitting API limits:**
+
+- Do **maximum 3 web searches** per run
+- Wait **15 seconds between each search** before proceeding
+- Combine searches efficiently: one search per routing strategy, not one per airline
+- If a search returns enough data, skip remaining searches and work with what you have
+- Do NOT retry failed searches — move on
+
 ## What to Do Each Run
 
 ### a) Search for top 5–8 route combinations
