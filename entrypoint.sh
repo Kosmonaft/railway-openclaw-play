@@ -28,8 +28,9 @@ if [ -n "$GEMINI_API_KEY" ]; then
 EOF"
 fi
 
-# Inject systemPrompt into openclaw.json
+# Inject systemPrompt into openclaw.json (wait for file to exist after first boot)
 OPENCLAW_CONFIG="/data/.openclaw/openclaw.json"
+mkdir -p /data/.openclaw
 if [ -f "$OPENCLAW_CONFIG" ]; then
   node -e "
     const fs = require('fs');
@@ -40,6 +41,8 @@ if [ -f "$OPENCLAW_CONFIG" ]; then
     fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
   "
   chown openclaw:openclaw "$OPENCLAW_CONFIG"
+else
+  echo "[entrypoint] openclaw.json not found yet - systemPrompt will be injected on next restart"
 fi
 
 # Copy workspace skills into the data volume so OpenClaw can find them
