@@ -52,4 +52,10 @@ if [ -d /app/skills ]; then
   chown -R openclaw:openclaw /data/workspace/skills
 fi
 
+# Copy BOOTSTRAP.md to workspace for agent persona
+if [ -f /app/BOOTSTRAP.md ]; then
+  cp /app/BOOTSTRAP.md /data/workspace/BOOTSTRAP.md
+  chown openclaw:openclaw /data/workspace/BOOTSTRAP.md
+fi
+
 exec gosu openclaw node src/server.js
