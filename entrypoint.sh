@@ -28,6 +28,20 @@ if [ -n "$GEMINI_API_KEY" ]; then
 EOF"
 fi
 
+# Inject systemPrompt into openclaw.json
+OPENCLAW_CONFIG="/data/.openclaw/openclaw.json"
+if [ -f "$OPENCLAW_CONFIG" ]; then
+  node -e "
+    const fs = require('fs');
+    const cfg = JSON.parse(fs.readFileSync('$OPENCLAW_CONFIG', 'utf8'));
+    cfg.agents = cfg.agents || {};
+    cfg.agents.defaults = cfg.agents.defaults || {};
+    cfg.agents.defaults.systemPrompt = 'You are Alfred, a personal AI assistant for Pawel. You help with travel research (finding the best SYD->Wroclaw flights for August 2026) and weekly grocery planning. You communicate via Telegram. Be concise, direct, and proactive. When you come online, greet Pawel briefly and report any updates.';
+    fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
+  "
+  chown openclaw:openclaw "$OPENCLAW_CONFIG"
+fi
+
 # Copy workspace skills into the data volume so OpenClaw can find them
 if [ -d /app/skills ]; then
   mkdir -p /data/workspace/skills
