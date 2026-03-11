@@ -36,11 +36,13 @@ if [ -d /app/skills ]; then
   chown -R openclaw:openclaw /data/workspace/skills
 fi
 
-# Copy BOOTSTRAP.md to workspace (always overwrite — it's our instructions)
-if [ -f /app/BOOTSTRAP.md ]; then
-  cp /app/BOOTSTRAP.md /data/workspace/BOOTSTRAP.md
-  chown openclaw:openclaw /data/workspace/BOOTSTRAP.md
-fi
+# Copy instruction files to workspace (always overwrite — these are our rules)
+for f in BOOTSTRAP.md AGENTS.md; do
+  if [ -f "/app/$f" ]; then
+    cp "/app/$f" "/data/workspace/$f"
+    chown openclaw:openclaw "/data/workspace/$f"
+  fi
+done
 
 # Copy IDENTITY.md and USER.md only if not already present
 # (allows Alfred to update them over time without losing changes on redeploy)
