@@ -1195,16 +1195,12 @@ const server = app.listen(PORT, () => {
         // Model config on defaults
         cfg.agents = cfg.agents || {};
         cfg.agents.defaults = cfg.agents.defaults || {};
-        cfg.agents.defaults.model = {
-          primary: "google/gemini-2.0-flash",
-          fallbacks: ["google/gemini-2.5-flash"],
-        };
+        // gemini-2.0-flash discontinued for new users — use 2.5-flash as primary
+        cfg.agents.defaults.model = { primary: "google/gemini-2.5-flash" };
         cfg.agents.defaults.models = cfg.agents.defaults.models || {};
-        cfg.agents.defaults.models["google/gemini-2.0-flash"] =
-          cfg.agents.defaults.models["google/gemini-2.0-flash"] || {};
         cfg.agents.defaults.models["google/gemini-2.5-flash"] =
           cfg.agents.defaults.models["google/gemini-2.5-flash"] || {};
-        // Identity and system prompt on the main agent
+        // Identity on the main agent
         cfg.agents.list = cfg.agents.list || [];
         let mainAgent = cfg.agents.list.find((a) => a.id === "main");
         if (!mainAgent) {
@@ -1212,8 +1208,17 @@ const server = app.listen(PORT, () => {
           cfg.agents.list.push(mainAgent);
         }
         mainAgent.identity = { name: "Alfred", theme: "personal AI assistant for Pawel", emoji: "🎩" };
-        // Identity links so Alfred knows who Pawel is across sessions
+        // systemPrompt at DM level — channels.telegram.direct.<chatId> is valid per docs
         if (process.env.TELEGRAM_CHAT_ID) {
+          cfg.channels = cfg.channels || {};
+          cfg.channels.telegram = cfg.channels.telegram || {};
+          cfg.channels.telegram.direct = cfg.channels.telegram.direct || {};
+          cfg.channels.telegram.direct[process.env.TELEGRAM_CHAT_ID] = {
+            ...(cfg.channels.telegram.direct[process.env.TELEGRAM_CHAT_ID] || {}),
+            systemPrompt:
+              "You are Alfred 🎩, a personal AI assistant for Pawel. You help with travel research (SYD→Wroclaw flights, August 2026) and weekly grocery planning. Be concise, direct, and proactive. Greet Pawel by name on startup.",
+          };
+          // Identity links so Alfred knows Pawel's name across sessions
           cfg.session = cfg.session || {};
           cfg.session.identityLinks = cfg.session.identityLinks || {};
           cfg.session.identityLinks["Pawel"] = [`telegram:${process.env.TELEGRAM_CHAT_ID}`];
