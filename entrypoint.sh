@@ -44,9 +44,9 @@ fi
 
 # Copy IDENTITY.md and USER.md only if not already present
 # (allows Alfred to update them over time without losing changes on redeploy)
-if [ -f /app/IDENTITY.md ] && [ ! -f /data/workspace/IDENTITY.md ]; then
-  cp /app/IDENTITY.md /data/workspace/IDENTITY.md
-  chown openclaw:openclaw /data/workspace/IDENTITY.md
+if [ -f /app/SOUL.md ] && [ ! -f /data/workspace/SOUL.md ]; then
+  cp /app/SOUL.md /data/workspace/SOUL.md
+  chown openclaw:openclaw /data/workspace/SOUL.md
 fi
 
 if [ -f /app/USER.md ] && [ ! -f /data/workspace/USER.md ]; then
