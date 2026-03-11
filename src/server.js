@@ -1189,13 +1189,11 @@ const server = app.listen(PORT, () => {
       } catch (err) {
         log.warn("wrapper", `doctor --fix failed: ${err.message}`);
       }
-      // Inject persona and model config after doctor (doctor strips unknown fields)
+      // Inject model config after doctor (doctor strips unknown fields if added before)
       try {
         const cfg = JSON.parse(fs.readFileSync(configPath(), "utf8"));
         cfg.agents = cfg.agents || {};
         cfg.agents.defaults = cfg.agents.defaults || {};
-        cfg.agents.defaults.systemPrompt =
-          "You are Alfred, a personal AI assistant for Pawel. You help with travel research (finding the best SYD->Wroclaw flights for August 2026) and weekly grocery planning. You communicate via Telegram. Be concise, direct, and proactive. When you come online, greet Pawel briefly and report any updates.";
         cfg.agents.defaults.model = {
           primary: "google/gemini-2.0-flash",
           fallbacks: ["google/gemini-2.5-flash"],
@@ -1206,9 +1204,9 @@ const server = app.listen(PORT, () => {
         cfg.agents.defaults.models["google/gemini-2.5-flash"] =
           cfg.agents.defaults.models["google/gemini-2.5-flash"] || {};
         fs.writeFileSync(configPath(), JSON.stringify(cfg, null, 2));
-        log.info("wrapper", "persona and model config injected");
+        log.info("wrapper", "model config injected");
       } catch (err) {
-        log.warn("wrapper", `persona injection failed: ${err.message}`);
+        log.warn("wrapper", `model injection failed: ${err.message}`);
       }
       await ensureGatewayRunning();
     })().catch((err) => {
