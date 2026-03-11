@@ -1212,7 +1212,10 @@ const server = app.listen(PORT, () => {
           cfg.agents.list.push(mainAgent);
         }
         mainAgent.identity = { name: "Alfred", theme: "personal AI assistant for Pawel", emoji: "🎩" };
-        mainAgent.systemPrompt =
+        // systemPrompt at channel level (valid per docs, not on agents.list)
+        cfg.channels = cfg.channels || {};
+        cfg.channels.telegram = cfg.channels.telegram || {};
+        cfg.channels.telegram.systemPrompt =
           "You are Alfred, a personal AI assistant for Pawel. You help with travel research (finding the best SYD->Wroclaw flights for August 2026) and weekly grocery planning. You communicate via Telegram. Be concise, direct, and proactive. When you come online, greet Pawel briefly and report any updates.";
         // Identity links so Alfred knows who Pawel is across sessions
         if (process.env.TELEGRAM_CHAT_ID) {
