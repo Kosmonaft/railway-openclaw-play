@@ -49,6 +49,11 @@ if [ -f /app/SOUL.md ] && [ ! -f /data/workspace/SOUL.md ]; then
   chown openclaw:openclaw /data/workspace/SOUL.md
 fi
 
+if [ -f /app/IDENTITY.md ] && [ ! -f /data/workspace/IDENTITY.md ]; then
+  cp /app/IDENTITY.md /data/workspace/IDENTITY.md
+  chown openclaw:openclaw /data/workspace/IDENTITY.md
+fi
+
 if [ -f /app/USER.md ] && [ ! -f /data/workspace/USER.md ]; then
   cp /app/USER.md /data/workspace/USER.md
   chown openclaw:openclaw /data/workspace/USER.md
