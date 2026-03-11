@@ -42,11 +42,16 @@ if [ -f /app/BOOTSTRAP.md ]; then
   chown openclaw:openclaw /data/workspace/BOOTSTRAP.md
 fi
 
-# Copy IDENTITY.md to workspace only if not already present
-# (allows Alfred to personalise it over time without losing changes on redeploy)
+# Copy IDENTITY.md and USER.md only if not already present
+# (allows Alfred to update them over time without losing changes on redeploy)
 if [ -f /app/IDENTITY.md ] && [ ! -f /data/workspace/IDENTITY.md ]; then
   cp /app/IDENTITY.md /data/workspace/IDENTITY.md
   chown openclaw:openclaw /data/workspace/IDENTITY.md
+fi
+
+if [ -f /app/USER.md ] && [ ! -f /data/workspace/USER.md ]; then
+  cp /app/USER.md /data/workspace/USER.md
+  chown openclaw:openclaw /data/workspace/USER.md
 fi
 
 exec gosu openclaw node src/server.js
