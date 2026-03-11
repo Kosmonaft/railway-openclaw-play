@@ -1189,9 +1189,10 @@ const server = app.listen(PORT, () => {
       } catch (err) {
         log.warn("wrapper", `doctor --fix failed: ${err.message}`);
       }
-      // Inject model config after doctor (doctor strips unknown fields if added before)
+      // Inject model, identity and persona config after doctor
       try {
         const cfg = JSON.parse(fs.readFileSync(configPath(), "utf8"));
+        // Model config on defaults
         cfg.agents = cfg.agents || {};
         cfg.agents.defaults = cfg.agents.defaults || {};
         cfg.agents.defaults.model = {
@@ -1203,10 +1204,26 @@ const server = app.listen(PORT, () => {
           cfg.agents.defaults.models["google/gemini-2.0-flash"] || {};
         cfg.agents.defaults.models["google/gemini-2.5-flash"] =
           cfg.agents.defaults.models["google/gemini-2.5-flash"] || {};
+        // Identity and system prompt on the main agent
+        cfg.agents.list = cfg.agents.list || [];
+        let mainAgent = cfg.agents.list.find((a) => a.id === "main");
+        if (!mainAgent) {
+          mainAgent = { id: "main" };
+          cfg.agents.list.push(mainAgent);
+        }
+        mainAgent.identity = { name: "Alfred", theme: "personal AI assistant for Pawel", emoji: "🎩" };
+        mainAgent.systemPrompt =
+          "You are Alfred, a personal AI assistant for Pawel. You help with travel research (finding the best SYD->Wroclaw flights for August 2026) and weekly grocery planning. You communicate via Telegram. Be concise, direct, and proactive. When you come online, greet Pawel briefly and report any updates.";
+        // Identity links so Alfred knows who Pawel is across sessions
+        if (process.env.TELEGRAM_CHAT_ID) {
+          cfg.session = cfg.session || {};
+          cfg.session.identityLinks = cfg.session.identityLinks || {};
+          cfg.session.identityLinks["Pawel"] = [`telegram:${process.env.TELEGRAM_CHAT_ID}`];
+        }
         fs.writeFileSync(configPath(), JSON.stringify(cfg, null, 2));
-        log.info("wrapper", "model config injected");
+        log.info("wrapper", "model, identity and persona config injected");
       } catch (err) {
-        log.warn("wrapper", `model injection failed: ${err.message}`);
+        log.warn("wrapper", `config injection failed: ${err.message}`);
       }
       await ensureGatewayRunning();
     })().catch((err) => {
