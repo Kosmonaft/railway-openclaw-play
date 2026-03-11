@@ -36,10 +36,17 @@ if [ -d /app/skills ]; then
   chown -R openclaw:openclaw /data/workspace/skills
 fi
 
-# Copy BOOTSTRAP.md to workspace for agent persona
+# Copy BOOTSTRAP.md to workspace (always overwrite — it's our instructions)
 if [ -f /app/BOOTSTRAP.md ]; then
   cp /app/BOOTSTRAP.md /data/workspace/BOOTSTRAP.md
   chown openclaw:openclaw /data/workspace/BOOTSTRAP.md
+fi
+
+# Copy IDENTITY.md to workspace only if not already present
+# (allows Alfred to personalise it over time without losing changes on redeploy)
+if [ -f /app/IDENTITY.md ] && [ ! -f /data/workspace/IDENTITY.md ]; then
+  cp /app/IDENTITY.md /data/workspace/IDENTITY.md
+  chown openclaw:openclaw /data/workspace/IDENTITY.md
 fi
 
 exec gosu openclaw node src/server.js
