@@ -25,6 +25,9 @@ COPY --chmod=755 entrypoint.sh ./entrypoint.sh
 # Copy custom skills and config
 COPY --chown=openclaw:openclaw skills/ ./skills/
 
+# Copy workspace identity/persona files
+COPY --chown=openclaw:openclaw BOOTSTRAP.md SOUL.md IDENTITY.md USER.md AGENTS.md ./
+
 RUN useradd -m -s /bin/bash openclaw \
   && chown -R openclaw:openclaw /app \
   && mkdir -p /data && chown openclaw:openclaw /data \
@@ -40,6 +43,8 @@ ENV HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
 
 ENV PORT=8080
 ENV OPENCLAW_ENTRY=/usr/local/lib/node_modules/openclaw/dist/entry.js
+ENV OPENCLAW_IDENTITY_PATH=/app/IDENTITY.md
+ENV OPENCLAW_USER_PROMPT_PATH=/app/USER.md
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \
