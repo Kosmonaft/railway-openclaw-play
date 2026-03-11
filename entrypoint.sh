@@ -38,6 +38,10 @@ if [ -f "$OPENCLAW_CONFIG" ]; then
     cfg.agents = cfg.agents || {};
     cfg.agents.defaults = cfg.agents.defaults || {};
     cfg.agents.defaults.systemPrompt = 'You are Alfred, a personal AI assistant for Pawel. You help with travel research (finding the best SYD->Wroclaw flights for August 2026) and weekly grocery planning. You communicate via Telegram. Be concise, direct, and proactive. When you come online, greet Pawel briefly and report any updates.';
+    cfg.agents.defaults.model = { primary: 'google/gemini-2.0-flash', fallbacks: ['google/gemini-2.5-flash'] };
+    cfg.agents.defaults.models = cfg.agents.defaults.models || {};
+    cfg.agents.defaults.models['google/gemini-2.0-flash'] = {};
+    cfg.agents.defaults.models['google/gemini-2.5-flash'] = cfg.agents.defaults.models['google/gemini-2.5-flash'] || {};
     fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
   "
   chown openclaw:openclaw "$OPENCLAW_CONFIG"
