@@ -28,26 +28,6 @@ if [ -n "$GEMINI_API_KEY" ]; then
 EOF"
 fi
 
-# Inject systemPrompt into openclaw.json (wait for file to exist after first boot)
-OPENCLAW_CONFIG="/data/.openclaw/openclaw.json"
-mkdir -p /data/.openclaw
-if [ -f "$OPENCLAW_CONFIG" ]; then
-  node -e "
-    const fs = require('fs');
-    const cfg = JSON.parse(fs.readFileSync('$OPENCLAW_CONFIG', 'utf8'));
-    cfg.agents = cfg.agents || {};
-    cfg.agents.defaults = cfg.agents.defaults || {};
-    cfg.agents.defaults.systemPrompt = 'You are Alfred, a personal AI assistant for Pawel. You help with travel research (finding the best SYD->Wroclaw flights for August 2026) and weekly grocery planning. You communicate via Telegram. Be concise, direct, and proactive. When you come online, greet Pawel briefly and report any updates.';
-    cfg.agents.defaults.model = { primary: 'google/gemini-2.0-flash', fallbacks: ['google/gemini-2.5-flash'] };
-    cfg.agents.defaults.models = cfg.agents.defaults.models || {};
-    cfg.agents.defaults.models['google/gemini-2.0-flash'] = {};
-    cfg.agents.defaults.models['google/gemini-2.5-flash'] = cfg.agents.defaults.models['google/gemini-2.5-flash'] || {};
-    fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
-  "
-  chown openclaw:openclaw "$OPENCLAW_CONFIG"
-else
-  echo "[entrypoint] openclaw.json not found yet - systemPrompt will be injected on next restart"
-fi
 
 # Copy workspace skills into the data volume so OpenClaw can find them
 if [ -d /app/skills ]; then
