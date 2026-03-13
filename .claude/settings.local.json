@@ -5,7 +5,31 @@
       "Bash(git init && git checkout -b main)",
       "Bash(git add Dockerfile railway.json .env.example .gitignore README.md openclaw.json openclaw-setup-guide-v2.md skills/ data/.gitkeep scripts/ && git status)",
       "Bash(git commit -m \"$\\(cat <<'EOF'\nInitial OpenClaw Railway setup\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git remote add origin https://github.com/Kosmonaft/railway-openclaw-play.git && git push -u origin main)"
+      "Bash(git remote add origin https://github.com/Kosmonaft/railway-openclaw-play.git && git push -u origin main)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -s https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/src/server.js | head -200)",
+      "Bash(curl -s https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/src/server.js | wc -l && curl -s https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/src/server.js > /tmp/openclaw-server.js && echo \"done\")",
+      "Bash(curl -s https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/pnpm-lock.yaml)",
+      "Read(//tmp/**)",
+      "Bash(cp /tmp/openclaw-server.js /Users/pawelchristow/Documents/Work/railway-openclaw-play/src/server.js && cp /tmp/pnpm-lock.yaml /Users/pawelchristow/Documents/Work/railway-openclaw-play/pnpm-lock.yaml)",
+      "Bash(mkdir -p /Users/pawelchristow/Documents/Work/railway-openclaw-play/src && cp /tmp/openclaw-server.js /Users/pawelchristow/Documents/Work/railway-openclaw-play/src/server.js && cp /tmp/pnpm-lock.yaml /Users/pawelchristow/Documents/Work/railway-openclaw-play/pnpm-lock.yaml && echo \"done\")",
+      "Bash(git -C /Users/pawelchristow/Documents/Work/railway-openclaw-play add Dockerfile entrypoint.sh src/server.js package.json pnpm-lock.yaml .env.example && git -C /Users/pawelchristow/Documents/Work/railway-openclaw-play rm --cached openclaw.json && git -C /Users/pawelchristow/Documents/Work/railway-openclaw-play status)",
+      "Bash(curl -s https://api.github.com/repos/arjunkomath/openclaw-railway-template/contents/src/public | python3 -c \"import sys,json; [print\\(f['name']\\) for f in json.load\\(sys.stdin\\)]\")",
+      "Bash(mkdir -p /Users/pawelchristow/Documents/Work/railway-openclaw-play/src/public && for f in loading.html logs.html setup.html styles.css tui.html; do curl -s \"https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/src/public/$f\" -o \"/Users/pawelchristow/Documents/Work/railway-openclaw-play/src/public/$f\" && echo \"fetched $f\"; done)",
+      "Bash(curl -s https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/railway.toml 2>/dev/null || echo \"no toml\" && curl -s https://raw.githubusercontent.com/arjunkomath/openclaw-railway-template/main/railway.json 2>/dev/null || echo \"no json\")",
+      "WebFetch(domain:docs.openclaw.ai)",
+      "Bash(git mv skills/travel-researcher/SKILL.md skills/travel-researcher/SKILL.md.tmp && git mv skills/travel-researcher/SKILL.md.tmp skills/travel-researcher/SKILL.md)",
+      "Bash(git mv -f skills/travel-researcher/skill.md skills/travel-researcher/SKILL.md)",
+      "Bash(git push)",
+      "WebFetch(domain:openrouter.ai)",
+      "WebFetch(domain:opencode.ai)",
+      "Bash(git add:*)",
+      "Bash(git mv:*)",
+      "Bash(git commit:*)",
+      "WebFetch(domain:clawhub.ai)",
+      "Bash(curl -s https://raw.githubusercontent.com/Jacky1n7/openclaw-skill-tavily-search/main/skill/SKILL.md)"
     ]
   }
 }
