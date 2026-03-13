@@ -24,6 +24,7 @@ COPY --chmod=755 entrypoint.sh ./entrypoint.sh
 
 # Copy custom skills and config
 COPY skills/ ./skills/
+RUN echo "Skills in image:" && ls -la /app/skills/ && find /app/skills -name "*.md"
 
 # Copy workspace identity/persona files
 COPY BOOTSTRAP.md SOUL.md IDENTITY.md USER.md AGENTS.md ./
