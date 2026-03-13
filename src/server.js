@@ -377,6 +377,11 @@ app.get("/styles.css", (_req, res) => {
   res.sendFile(path.join(process.cwd(), "src", "public", "styles.css"));
 });
 
+app.get("/favicon.svg", (_req, res) => {
+  res.setHeader("Content-Type", "image/svg+xml");
+  res.sendFile(path.join(process.cwd(), "src", "public", "favicon.svg"));
+});
+
 app.get("/healthz", async (_req, res) => {
   let gateway = "unconfigured";
   if (isConfigured()) {
