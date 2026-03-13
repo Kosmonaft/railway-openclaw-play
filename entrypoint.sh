@@ -30,10 +30,12 @@ fi
 
 
 # Copy workspace skills into the data volume so OpenClaw can find them (always overwrite)
+echo "[entrypoint] Skills in /app/skills/: $(ls /app/skills/ 2>&1)"
 if [ -d /app/skills ]; then
   mkdir -p /data/workspace/skills
   cp -rf /app/skills/. /data/workspace/skills/
   chown -R openclaw:openclaw /data/workspace/skills
+  echo "[entrypoint] Skills copied to /data/workspace/skills/: $(ls /data/workspace/skills/ 2>&1)"
 fi
 
 # Copy instruction files to workspace (always overwrite — these are our rules)
