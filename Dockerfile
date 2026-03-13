@@ -22,9 +22,11 @@ RUN corepack enable && pnpm install --frozen-lockfile --prod
 COPY src ./src
 COPY --chmod=755 entrypoint.sh ./entrypoint.sh
 
-# Copy custom skills and config
-COPY skills/ ./skills/
-RUN echo "Skills in image:" && ls -la /app/skills/ && find /app/skills -name "*.md"
+# Copy custom skills — must be listed explicitly (directory glob unreliable in Railway builds)
+COPY skills/travel-researcher/skill.md ./skills/travel-researcher/skill.md
+COPY skills/grocery-planner/skill.md ./skills/grocery-planner/skill.md
+COPY skills/tavily-search/skill.md ./skills/tavily-search/skill.md
+RUN echo "Skills in image:" && find /app/skills -name "*.md"
 
 # Copy workspace identity/persona files
 COPY BOOTSTRAP.md SOUL.md IDENTITY.md USER.md AGENTS.md ./
