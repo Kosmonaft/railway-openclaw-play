@@ -23,10 +23,10 @@ COPY src ./src
 COPY --chmod=755 entrypoint.sh ./entrypoint.sh
 
 # Copy custom skills and config
-COPY --chown=openclaw:openclaw skills/ ./skills/
+COPY skills/ ./skills/
 
 # Copy workspace identity/persona files
-COPY --chown=openclaw:openclaw BOOTSTRAP.md SOUL.md IDENTITY.md USER.md AGENTS.md ./
+COPY BOOTSTRAP.md SOUL.md IDENTITY.md USER.md AGENTS.md ./
 
 RUN useradd -m -s /bin/bash openclaw \
   && chown -R openclaw:openclaw /app \
