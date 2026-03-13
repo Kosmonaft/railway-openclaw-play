@@ -29,10 +29,10 @@ EOF"
 fi
 
 
-# Copy workspace skills into the data volume so OpenClaw can find them
+# Copy workspace skills into the data volume so OpenClaw can find them (always overwrite)
 if [ -d /app/skills ]; then
   mkdir -p /data/workspace/skills
-  cp -r /app/skills/. /data/workspace/skills/
+  cp -rf /app/skills/. /data/workspace/skills/
   chown -R openclaw:openclaw /data/workspace/skills
 fi
 

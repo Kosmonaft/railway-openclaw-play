@@ -377,7 +377,7 @@ app.get("/styles.css", (_req, res) => {
   res.sendFile(path.join(process.cwd(), "src", "public", "styles.css"));
 });
 
-app.get("/favicon.svg", (_req, res) => {
+app.get(["/favicon.svg", "/openclaw/favicon.svg"], (_req, res) => {
   res.setHeader("Content-Type", "image/svg+xml");
   res.sendFile(path.join(process.cwd(), "src", "public", "favicon.svg"));
 });
