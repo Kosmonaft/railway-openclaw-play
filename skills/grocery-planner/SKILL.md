@@ -1,3 +1,8 @@
+---
+name: grocery-planner
+description: Every Sunday, researches Woolworths catalogue specials, builds a 7-day dinner menu around what's on sale, and sends a categorised shopping list to Telegram.
+---
+
 # Skill: Weekly Grocery + Menu Planner
 
 ## Purpose
