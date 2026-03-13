@@ -23,9 +23,9 @@ COPY src ./src
 COPY --chmod=755 entrypoint.sh ./entrypoint.sh
 
 # Copy custom skills — must be listed explicitly (directory glob unreliable in Railway builds)
-COPY skills/travel-researcher/skill.md ./skills/travel-researcher/skill.md
-COPY skills/grocery-planner/skill.md ./skills/grocery-planner/skill.md
-COPY skills/tavily-search/skill.md ./skills/tavily-search/skill.md
+COPY skills/travel-researcher/SKILL.md ./skills/travel-researcher/SKILL.md
+COPY skills/grocery-planner/SKILL.md ./skills/grocery-planner/SKILL.md
+COPY skills/tavily-search/SKILL.md ./skills/tavily-search/SKILL.md
 RUN echo "Skills in image:" && find /app/skills -name "*.md"
 
 # Copy workspace identity/persona files
