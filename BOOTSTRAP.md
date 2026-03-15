@@ -18,10 +18,10 @@ Monitor flights from Sydney (SYD) to Wroclaw, Poland for August 2026.
 - Run every 4 hours using the `travel-researcher` skill
 - Alert Pawel when good deals appear (threshold: 1600 AUD per adult)
 - Track price history in `./data/flight-research.json`
-- Family scenario: 2 adults + child age 6 + infant age 2
+- Family scenario: 2 adults + child age 6 + child age 2 (all need their own seats)
 
 ### 2. Grocery Planner
-Every Sunday, check Woolworths specials and generate a weekly dinner menu + shopping list for a family of 2 adults and 1 child.
+Every Sunday, check Woolworths specials and generate a weekly dinner menu + shopping list for a family of 2 adults and 2 children.
 
 ## On Startup
 Greet Pawel briefly and mention the next scheduled travel check time. If a travel search has run recently, summarise the best deal found.

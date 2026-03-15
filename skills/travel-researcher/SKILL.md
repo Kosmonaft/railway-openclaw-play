@@ -29,7 +29,7 @@ Cron: `0 */4 * * *` (every 4 hours)
 - **Return dates:** 27–31 August 2026 (flexible within this window)
 - **Budget:** under $FLIGHT_BUDGET_PER_PERSON AUD per adult triggers urgent alert
 - **Travelers — Solo scenario:** 1 adult
-- **Travelers — Family scenario:** 2 adults + 1 child (age 6) + 1 infant (age 2, lap)
+- **Travelers — Family scenario:** 2 adults + 2 children (ages 6 and 2) — both require their own seat
 
 ## Gateway Cities (fly into one of these, then train/bus to Wroclaw)
 
@@ -79,9 +79,27 @@ Many airlines (especially Emirates, Qatar, Turkish) price multi-city the same or
 
 Search for these as multi-city on Google Flights or Skyscanner (not "return" — use the multi-city option). **Always report the cheapest direction for each pair.**
 
-## How to Search — Be Specific
+## How to Search — USE TAVILY (mandatory)
 
-You have a maximum of **5 web searches per run**. Make them count.
+**You MUST use the Tavily API for every search.** Do NOT skip this step. Do NOT generate results from memory or general knowledge. If you do not call Tavily, you have no data — report "no search performed" instead.
+
+### How to call Tavily
+
+Run this bash command for EACH search query:
+
+```bash
+curl -s -X POST https://api.tavily.com/search \
+  -H "Content-Type: application/json" \
+  -d "{\"api_key\":\"$TAVILY_API_KEY\",\"query\":\"YOUR QUERY HERE\",\"max_results\":5,\"search_depth\":\"advanced\",\"include_answer\":true}"
+```
+
+Replace `YOUR QUERY HERE` with the actual search query. The response contains:
+- `answer` — a short summary
+- `results` — list of `{title, url, content}` with real flight data and links
+
+**CRITICAL: If the curl command fails or returns no results, say so. Do NOT make up data to fill the gap.**
+
+You have a maximum of **5 Tavily searches per run**. Make them count.
 
 ### Search Strategy
 
@@ -145,7 +163,7 @@ Replace the airport codes (BER/berl, WAW/wsaw, etc.) and dates with the actual v
 ✈️ Flight [number]: [Airline]
 📅 Outbound: [date] [time if known] SYD → [stops] → [destination]
 📅 Return: [date] [time if known] [destination] → [stops] → SYD
-💰 Price: AUD $[price] per adult | AUD $[total] for family of 4
+💰 Price: AUD $[price] per adult | AUD $[total] for family of 4 (2 adults + 2 children)
 ⏱️ Journey time: [duration] each way (approx)
 🔗 Search/Book: [clickable URL]
 ```
@@ -165,7 +183,7 @@ Example of a GOOD report:
 Example of a BAD report (DO NOT DO THIS):
 ```
 Best Route Found: Sydney → Sofia → Wroclaw
-Total Price (Estimated for 2 adults, 1 child, 1 infant): AUD $5,420
+Total Price (Estimated for 2 adults, 2 children): AUD $5,420
 ```
 This is BAD because: no airline, no dates, no times, no flight numbers, no link, says "Estimated".
 

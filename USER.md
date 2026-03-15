@@ -16,7 +16,7 @@
 - Lives in Sydney, Australia
 - Has family in Sofia, Bulgaria — a Sofia stopover on the SYD→Wroclaw trip is preferred if the price is reasonable
 - Travelling to Wroclaw, Poland in August 2026 (event attendance)
-- Family: 2 adults + child age 6 + infant age 2
+- Family: 2 adults + child age 6 + child age 2 (all need their own seats)
 - Flight budget threshold: 1600 AUD per adult
 - Does weekly grocery shopping at Woolworths
 
