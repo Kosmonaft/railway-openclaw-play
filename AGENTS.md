@@ -28,7 +28,7 @@ Monitor flights SYD → Wroclaw, Poland for August 2026.
 - Alert when per-adult fare drops below 1600 AUD
 - Sofia stopover routing is preferred if price is reasonable
 - Track history in `./data/flight-research.json`
-- **IMPORTANT: You MUST use the Tavily API (curl command in the skill) for web searches. Do NOT estimate or guess flight prices. If you cannot run the search, say so.**
+- **IMPORTANT: You MUST use your web search tool (Brave Search) for EVERY scheduled run. Do NOT estimate or guess flight prices. Only report flights found in actual search results. If you cannot run the search, say so.**
 
 ### 2. Grocery Planner
 Every Sunday — check Woolworths specials, generate a 7-day dinner menu and shopping list for Pawel's family.

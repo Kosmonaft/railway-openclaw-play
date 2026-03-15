@@ -81,27 +81,19 @@ Many airlines (especially Emirates, Qatar, Turkish) price multi-city the same or
 
 Search for these as multi-city on Google Flights or Skyscanner (not "return" — use the multi-city option). **Always report the cheapest direction for each pair.**
 
-## How to Search — USE TAVILY (mandatory)
+## How to Search — USE YOUR WEB SEARCH TOOL (mandatory)
 
-**You MUST use the Tavily API for every search.** Do NOT skip this step. Do NOT generate results from memory or general knowledge. If you do not call Tavily, you have no data — report "no search performed" instead.
+**You MUST perform real web searches for every run.** Use your built-in web search tool (Brave Search API or whatever search tool is available to you). Do NOT skip this step. Do NOT generate results from memory or general knowledge.
 
-### How to call Tavily
+**Step by step for EACH search:**
+1. Call your web search tool with the query
+2. Read the results — extract airline names, prices, dates, and URLs from the search results
+3. Only report flights that appeared in the search results
+4. If a search returns no useful results, say "no results found for [query]" — do NOT make up data
 
-Run this bash command for EACH search query:
+**CRITICAL: If you did not perform a web search, you have NO data. Say "no search performed" and explain why. Do NOT fabricate flight information.**
 
-```bash
-curl -s -X POST https://api.tavily.com/search \
-  -H "Content-Type: application/json" \
-  -d "{\"api_key\":\"$TAVILY_API_KEY\",\"query\":\"YOUR QUERY HERE\",\"max_results\":5,\"search_depth\":\"advanced\",\"include_answer\":true}"
-```
-
-Replace `YOUR QUERY HERE` with the actual search query. The response contains:
-- `answer` — a short summary
-- `results` — list of `{title, url, content}` with real flight data and links
-
-**CRITICAL: If the curl command fails or returns no results, say so. Do NOT make up data to fill the gap.**
-
-You have a maximum of **5 Tavily searches per run**. Make them count.
+You have a maximum of **5 web searches per run**. Make them count.
 
 ### Search Strategy
 
@@ -109,29 +101,29 @@ Pick 2–3 of the most promising search queries from this list. Rotate which one
 
 **Search query examples (use these exact patterns):**
 
-Direct routes:
-1. `Sydney to Berlin flights August 5-8 2026 return August 27-31 one adult cheapest`
-2. `Sydney to Sofia flights August 2026 return cheapest Skyscanner`
-3. `Sydney to Warsaw flights 5 August 2026 return 29 August cheapest Google Flights`
-4. `Sydney to Krakow cheapest flights August 2026 Kayak`
-5. `cheap flights Sydney to Prague August 2026`
+Direct routes (arrive Europe by ~13 Aug, return ~27-31 Aug):
+1. `Sydney to Berlin return flights departing 1-8 August 2026 return 27-31 August cheapest`
+2. `Sydney to Sofia return flights August 2026 cheapest Skyscanner`
+3. `Sydney to Warsaw return flights August 2026 cheapest Google Flights`
+4. `Sydney to Krakow cheapest return flights August 2026`
+5. `cheap flights Sydney to Prague August 2026 return end of August`
 
 Split ticket via Singapore (search BOTH legs separately):
-6. `Sydney to Singapore return flights August 3-5 2026 return August 29-31 cheapest`
-7. `Singapore to Berlin flights August 5-7 2026 return August 27-29 one adult cheapest`
-8. `Singapore to Sofia flights August 2026 return cheapest Skyscanner`
-9. `Singapore to Warsaw flights August 5 2026 return August 28 cheapest`
+6. `Sydney to Singapore return flights August 1-5 2026 return August 28-31 cheapest`
+7. `Singapore to Berlin return flights August 3-7 2026 return August 27-29 cheapest`
+8. `Singapore to Sofia return flights August 2026 cheapest`
+9. `Singapore to Warsaw return flights August 2026 cheapest`
 
 Split ticket via Bangkok/KL:
 10. `Sydney to Bangkok return flights August 2026 cheapest Scoot Jetstar`
-11. `Bangkok to Berlin flights August 2026 return cheapest`
+11. `Bangkok to Berlin return flights August 2026 cheapest`
 
 Multi-city (open-jaw) — search BOTH directions:
-12. `multi-city flights Sydney to Berlin August 6 Amsterdam to Sydney August 29 2026`
-13. `multi-city flights Sydney to Amsterdam August 6 Berlin to Sydney August 29 2026`
-14. `multi-city Sydney to Warsaw then Sofia to Sydney August 2026 Google Flights`
-15. `multi-city Sydney to Sofia then Warsaw to Sydney August 2026 Google Flights`
-16. `open jaw flights Sydney Sofia return Krakow Sydney August 2026`
+12. `multi-city flights Sydney to Berlin August 6 then Amsterdam to Sydney August 29 2026`
+13. `multi-city flights Sydney to Amsterdam August 6 then Berlin to Sydney August 29 2026`
+14. `multi-city flights Sydney to Warsaw August 6 then Sofia to Sydney August 29 2026`
+15. `multi-city flights Sydney to Sofia August 1 then Warsaw to Sydney August 29 2026`
+16. `open jaw flights Sydney to Sofia then Krakow to Sydney August 2026`
 
 When searching split tickets, **always report both legs with individual prices AND the combined total** so Pawel can compare against direct flights.
 
