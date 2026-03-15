@@ -14,6 +14,9 @@ RUN apt-get update \
 
 RUN npm install -g openclaw@2026.3.13
 
+# Install Playwright + Chromium for browser tool (flight price scraping)
+RUN npx playwright@latest install --with-deps chromium
+
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
@@ -44,6 +47,7 @@ ENV HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
 ENV HOMEBREW_CELLAR="/home/linuxbrew/.linuxbrew/Cellar"
 ENV HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew/Homebrew"
 
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 ENV PORT=8080
 ENV OPENCLAW_ENTRY=/usr/local/lib/node_modules/openclaw/dist/entry.js
 ENV OPENCLAW_IDENTITY_PATH=/app/IDENTITY.md

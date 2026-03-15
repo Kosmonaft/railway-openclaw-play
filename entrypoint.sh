@@ -29,6 +29,43 @@ EOF"
 fi
 
 
+# Ensure Playwright browsers are accessible by openclaw user
+if [ -d /ms-playwright ]; then
+  chown -R openclaw:openclaw /ms-playwright
+fi
+
+# Set browser executable path for OpenClaw browser tool
+CHROMIUM_PATH=$(find /ms-playwright -name "chromium" -o -name "chrome" -type f 2>/dev/null | grep -E "chrome$|chromium$" | head -1)
+if [ -n "$CHROMIUM_PATH" ]; then
+  echo "[entrypoint] Found Chromium at: $CHROMIUM_PATH"
+else
+  # Fallback: standard Playwright chromium location
+  CHROMIUM_PATH=$(find /ms-playwright -path "*/chrome-linux/chrome" 2>/dev/null | head -1)
+  if [ -z "$CHROMIUM_PATH" ]; then
+    CHROMIUM_PATH=$(find /ms-playwright -path "*/chromium-*/chrome-linux/chrome" 2>/dev/null | head -1)
+  fi
+  echo "[entrypoint] Chromium fallback path: $CHROMIUM_PATH"
+fi
+
+if [ -n "$CHROMIUM_PATH" ]; then
+  export CHROMIUM_EXECUTABLE_PATH="$CHROMIUM_PATH"
+  echo "[entrypoint] Setting browser.executablePath to $CHROMIUM_PATH"
+  # Inject into OpenClaw config
+  OPENCLAW_CONFIG="/data/.openclaw/openclaw.json"
+  if [ -f "$OPENCLAW_CONFIG" ]; then
+    # Use node to safely merge the executablePath into existing config
+    node -e "
+      const fs = require('fs');
+      const cfg = JSON.parse(fs.readFileSync('$OPENCLAW_CONFIG', 'utf8'));
+      cfg.browser = cfg.browser || {};
+      cfg.browser.executablePath = '$CHROMIUM_PATH';
+      cfg.browser.enabled = true;
+      fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
+    "
+    echo "[entrypoint] Browser config injected into openclaw.json"
+  fi
+fi
+
 # Copy workspace skills into the data volume so OpenClaw can find them (always overwrite)
 echo "[entrypoint] Skills in /app/skills/: $(ls /app/skills/ 2>&1)"
 if [ -d /app/skills ]; then
