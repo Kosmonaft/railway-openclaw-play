@@ -81,19 +81,21 @@ Many airlines (especially Emirates, Qatar, Turkish) price multi-city the same or
 
 Search for these as multi-city on Google Flights or Skyscanner (not "return" — use the multi-city option). **Always report the cheapest direction for each pair.**
 
-## How to Search — USE YOUR WEB SEARCH TOOL (mandatory)
+## How to Search — MANDATORY: call `web_search` tool
 
-**You MUST perform real web searches for every run.** Use your built-in web search tool (Brave Search API or whatever search tool is available to you). Do NOT skip this step. Do NOT generate results from memory or general knowledge.
+**You MUST call the `web_search` tool for every search.** This is the tool available to you — call it by name. Do NOT skip this step. Do NOT generate results from memory or general knowledge.
 
 **Step by step for EACH search:**
-1. Call your web search tool with the query
-2. Read the results — extract airline names, prices, dates, and URLs from the search results
-3. Only report flights that appeared in the search results
-4. If a search returns no useful results, say "no results found for [query]" — do NOT make up data
+1. Call the `web_search` tool with your query string
+2. The tool returns results with `content` (text with flight data) and `citations` (URLs from Kayak, Skyscanner, Expedia, etc.)
+3. Extract airline names, prices, dates from the `content` field
+4. Extract clickable URLs from the `citations` field — these are your booking/search links
+5. Only report flights that appeared in the actual `web_search` results
+6. If a search returns no useful flight data, say "no results found for [query]" — do NOT make up data
 
-**CRITICAL: If you did not perform a web search, you have NO data. Say "no search performed" and explain why. Do NOT fabricate flight information.**
+**CRITICAL: Every cron run MUST include at least 3 calls to the `web_search` tool. If you did not call `web_search`, you have NO data. Say "no search performed" and explain why. Do NOT fabricate flight information.**
 
-You have a maximum of **5 web searches per run**. Make them count.
+You have a maximum of **5 `web_search` calls per run**. Use at least 3.
 
 ### Search Strategy
 
@@ -127,20 +129,16 @@ Multi-city (open-jaw) — search BOTH directions:
 
 When searching split tickets, **always report both legs with individual prices AND the combined total** so Pawel can compare against direct flights.
 
-### Constructing Clickable Links
+### Links — use citations from `web_search` results
 
-For every flight found, provide a link so Pawel can check/book it. Use these **verified URL patterns**:
+The `web_search` tool returns a `citations` array with URLs from Kayak, Skyscanner, Expedia, etc. **Always include these URLs in your report** — they are real, clickable links.
 
-- **Google Flights:** `https://www.google.com/travel/flights?hl=en&q=Flights+to+BER+from+SYD+on+2026-08-06+through+2026-08-29`
-- **Skyscanner:** `https://www.skyscanner.com.au/transport/flights/syd/berl/2026-08-06/2026-08-29/?adultsv2=1&cabinclass=economy`
-- **Kayak:** `https://www.kayak.com.au/flights/SYD-BER/2026-08-06/2026-08-29?sort=bestflight_a`
-
-Replace the airport codes (BER/berl, WAW/wsaw, etc.) and dates with the actual values from the flight you found.
-
-**Skyscanner city codes** (use these, not IATA codes):
-- Berlin = `berl`, Warsaw = `wsaw`, Krakow = `krak`, Prague = `prag`, Vienna = `vien`, Sofia = `sofi`
-
-**Aim for variety:** include links from at least 2 different search engines per run so Pawel can compare prices across platforms. If the web search result itself contains a direct booking URL, include that as well.
+For every flight you report, include:
+1. **All relevant URLs from the `citations` array** returned by `web_search`
+2. If the citations don't include a direct search link for the specific route/dates, construct one using these patterns:
+   - **Skyscanner:** `https://www.skyscanner.com.au/transport/flights/syd/berl/2026-08-06/2026-08-29/?adultsv2=1&cabinclass=economy`
+   - **Kayak:** `https://www.kayak.com.au/flights/SYD-BER/2026-08-06/2026-08-29?sort=bestflight_a`
+   - Skyscanner city codes: Berlin=`berl`, Warsaw=`wsaw`, Krakow=`krak`, Prague=`prag`, Vienna=`vien`, Sofia=`sofi`
 
 ### API Rate Limiting
 
