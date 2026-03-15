@@ -25,8 +25,10 @@ Cron: `0 */4 * * *` (every 4 hours)
 
 - **Origin:** Sydney (SYD)
 - **Destination:** Wroclaw, Poland (no direct flights — route via European gateway)
-- **Outbound dates:** 5–8 August 2026 (flexible within this window)
-- **Return dates:** 27–31 August 2026 (flexible within this window)
+- **Must be in Wroclaw by:** 15 August 2026
+- **Stay in Europe:** approximately 2 weeks
+- **Outbound from Sydney:** 1–8 August 2026 (flexible — earlier if Sofia stopover)
+- **Return to Sydney:** 27–31 August 2026 (flexible)
 - **Budget:** under $FLIGHT_BUDGET_PER_PERSON AUD per adult triggers urgent alert
 - **Travelers — Solo scenario:** 1 adult
 - **Travelers — Family scenario:** 2 adults + 2 children (ages 6 and 2) — both require their own seat
