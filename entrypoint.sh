@@ -67,6 +67,7 @@ if [ -n "$CHROMIUM_PATH" ]; then
       cfg.browser.executablePath = '$CHROMIUM_PATH';
       cfg.browser.enabled = true;
       cfg.browser.noSandbox = true;
+      cfg.browser.headless = true;
       fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
     "
     echo "[entrypoint] Browser config injected into openclaw.json"
