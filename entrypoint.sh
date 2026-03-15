@@ -29,6 +29,12 @@ EOF"
 fi
 
 
+# Clean up stale Chromium lock/singleton files from previous container runs
+find /data -name "SingletonLock" -delete 2>/dev/null || true
+find /data -name "SingletonCookie" -delete 2>/dev/null || true
+find /data -name "SingletonSocket" -delete 2>/dev/null || true
+find /tmp -name "SingletonLock" -delete 2>/dev/null || true
+
 # Ensure Playwright browsers are accessible by openclaw user
 if [ -d /ms-playwright ]; then
   chown -R openclaw:openclaw /ms-playwright
@@ -60,6 +66,7 @@ if [ -n "$CHROMIUM_PATH" ]; then
       cfg.browser = cfg.browser || {};
       cfg.browser.executablePath = '$CHROMIUM_PATH';
       cfg.browser.enabled = true;
+      cfg.browser.noSandbox = true;
       fs.writeFileSync('$OPENCLAW_CONFIG', JSON.stringify(cfg, null, 2));
     "
     echo "[entrypoint] Browser config injected into openclaw.json"
